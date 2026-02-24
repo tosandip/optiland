@@ -216,6 +216,9 @@ class ZemaxToOpticConverter:
             # For all other surfaces, use the standard radius.
             surface_params["radius"] = data["radius"]
 
+        if "diameter" in data:
+            surface_params["semi_aperture"] = data["diameter"]
+
         self.optic.add_surface(**surface_params)
 
     def _configure_surface_coefficients(self, data: dict):

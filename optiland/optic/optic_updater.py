@@ -209,7 +209,8 @@ class OpticUpdater:
         ya = be.abs(be.ravel(ya))
         yb = be.abs(be.ravel(yb))
         for k, surface in enumerate(self.optic.surface_group.surfaces):
-            surface.set_semi_aperture(r_max=ya[k] + yb[k])
+            if not getattr(surface, "is_semi_aperture_fixed", False):
+                surface.set_semi_aperture(r_max=ya[k] + yb[k])
             self.update_normalization(surface)
 
     def update_normalization(self, surface) -> None:

@@ -61,13 +61,15 @@ class Surface:
         surface_type: str | None = None,
         comment: str = "",
         interaction_model: BaseInteractionModel | None = None,
+        **kwargs: Unpack[SurfaceParameters],
     ):
         self.geometry = geometry
         self._previous_surface = previous_surface
         self._material_post = material_post
         self.is_stop = is_stop
         self.aperture = configure_aperture(aperture)
-        self.semi_aperture = None
+        self.semi_aperture = kwargs.get("semi_aperture")
+        self.is_semi_aperture_fixed = self.semi_aperture is not None
         self.surface_type = surface_type
         self.comment = comment
 

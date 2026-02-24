@@ -35,7 +35,7 @@ class ObjectSurface(Surface):
 
     """
 
-    def __init__(self, geometry, material_post, comment=""):
+    def __init__(self, geometry, material_post, comment="", **kwargs):
         super().__init__(
             geometry=geometry,
             previous_surface=None,
@@ -43,6 +43,7 @@ class ObjectSurface(Surface):
             is_stop=False,
             aperture=None,
             comment=comment,
+            **kwargs,
         )
 
     @property

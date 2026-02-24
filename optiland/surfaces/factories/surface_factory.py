@@ -149,6 +149,7 @@ class SurfaceFactory:
             comment=comment,
             aperture=kwargs.get("aperture"),
             interaction_model=interaction_model,
+            semi_aperture=kwargs.get("semi_aperture"),
         )
 
         # Add the thickness as an attribute to the surface
