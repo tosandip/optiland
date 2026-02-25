@@ -7,7 +7,7 @@ fprintf('Setting up Python environment...\n');
 py.importlib.import_module('sys').path.append(pwd);
 
 % List of files to process
-zmx_files = {'lens_thorlabs_iso_8859_1.zmx', 'lens1.zmx'};
+zmx_files = {'Singlet.zmx', 'lens_thorlabs_iso_8859_1.zmx', 'lens1.zmx'};
 
 for f_idx = 1:length(zmx_files)
     fname = zmx_files{f_idx};
@@ -32,7 +32,20 @@ for f_idx = 1:length(zmx_files)
         surfs_tuple = py.getattr(optic.surface_group, 'surfaces');
         surfs = cell(surfs_tuple);
         
-        if strcmp(fname, 'lens_thorlabs_iso_8859_1.zmx')
+        if strcmp(fname, 'Singlet.zmx')
+            % verify Surface 1 (index 2 in 1-based MATLAB cell array)
+            s1 = surfs{2};
+            semi_ap = double(s1.semi_aperture);
+            expected = 4.5; % From DIAM 4.5 in ZMX
+            
+            fprintf('Surface 1 Semi-aperture: %.4f (Expected: %.4f)\n', semi_ap, expected);
+            if abs(semi_ap - expected) < 1e-6
+                fprintf('=> STATUS: [PASS] Semi-diameter correctly matches ZMX file.\n');
+            else
+                fprintf('=> STATUS: [FAIL] Semi-diameter mismatch!\n');
+            end
+            
+        elseif strcmp(fname, 'lens_thorlabs_iso_8859_1.zmx')
             % verify Surface 1 (index 2 in 1-based MATLAB cell array)
             s1 = surfs{2};
             semi_ap = double(s1.semi_aperture);
