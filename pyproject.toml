@@ -25,6 +25,7 @@ dependencies = [
     "requests",
     "seaborn",
     "typing-extensions>=4.1.0",
+    "pytest",
 ]
 license = { text = "MIT License" }
 
@@ -38,7 +39,7 @@ optiland = "optiland_gui.run_gui:main"
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["optiland", "optiland_gui"] # Auto-discovers subpackages
+packages = ["optiland", "optiland_gui"] # Auto-disco1rs subpackages
 
 [tool.hatch.metadata.files]
 "optiland/database" = ["*.csv", "*.yml", "**/*.yml", "*.npy"]
