@@ -4,7 +4,7 @@
 
 % 1. Setup Python Environment
 fprintf('Setting up Python environment...\n');
-pyenv('Version','.venv-1/Scripts/python.exe', 'ExecutionMode','InProcess');
+pyenv('Version','.venv/Scripts/python.exe', 'ExecutionMode','InProcess');
 py.importlib.import_module('sys').path.append(pwd);
 
 % List of files to process
