@@ -32,6 +32,82 @@ def test_zmx_semi_diameter_preservation():
     assert s1.semi_aperture == original_semi_aperture
     assert getattr(s1, 'is_semi_aperture_fixed', False) is True
 
+def test_zmx_semi_diameter_thorlabs():
+    """
+    Test semi-diameter preservation and info() call for Thorlabs ZMX file.
+    """
+    import io
+    from contextlib import redirect_stdout
+
+    current_dir = os.path.dirname(__file__)
+    zmx_file = os.path.join(current_dir, 'zemax_files', 'lens_thorlabs_iso_8859_1.zmx')
+    
+    if not os.path.exists(zmx_file):
+        pytest.skip(f"ZMX file not found: {zmx_file}")
+    
+    # Load the optic
+    optic = load_zemax_file(zmx_file)
+    
+    # In lens_thorlabs_iso_8859_1.zmx, surface 1 has DIAM 9.0
+    s1 = optic.surface_group.surfaces[1]
+    assert s1.semi_aperture == 9.0
+    assert getattr(s1, 'is_semi_aperture_fixed', False) is True
+    
+    # Run paraxial update
+    optic.update_paraxial()
+    
+    # Verify preservation
+    assert s1.semi_aperture == 9.0
+    assert getattr(s1, 'is_semi_aperture_fixed', False) is True
+
+    # Verify info() table display
+    f = io.StringIO()
+    with redirect_stdout(f):
+        optic.info()
+    output = f.getvalue()
+    
+    # Check if Semi-aperture column contains 9.0
+    assert "Semi-aperture" in output
+    assert "9" in output
+
+def test_zmx_semi_diameter_singlet():
+    """
+    Test semi-diameter preservation and info() call for Singlet.zmx.
+    """
+    import io
+    from contextlib import redirect_stdout
+
+    current_dir = os.path.dirname(__file__)
+    zmx_file = os.path.join(current_dir, 'zemax_files', 'Singlet.zmx')
+    
+    if not os.path.exists(zmx_file):
+        pytest.skip(f"ZMX file not found: {zmx_file}")
+    
+    # Load the optic
+    optic = load_zemax_file(zmx_file)
+    
+    # In Singlet.zmx, surface 1 has DIAM 4.5
+    s1 = optic.surface_group.surfaces[1]
+    assert s1.semi_aperture == 4.5
+    assert getattr(s1, 'is_semi_aperture_fixed', False) is True
+    
+    # Run paraxial update
+    optic.update_paraxial()
+    
+    # Verify preservation
+    assert s1.semi_aperture == 4.5
+    assert getattr(s1, 'is_semi_aperture_fixed', False) is True
+
+    # Verify info() table display
+    f = io.StringIO()
+    with redirect_stdout(f):
+        optic.info()
+    output = f.getvalue()
+    
+    # Check if Semi-aperture column contains 4.5
+    assert "Semi-aperture" in output
+    assert "4.5" in output
+
 def test_manual_semi_diameter_setting():
     """
     Test that manually setting a semi-aperture also marks it as fixed.
